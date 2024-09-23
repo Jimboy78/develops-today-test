@@ -4,14 +4,14 @@ import axios from "axios";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 
-Chart.register(...registerables); // Registrar las escalas
+Chart.register(...registerables);
 
 const CountryInfo = () => {
   const { countryCode } = useParams();
   const [countryData, setCountryData] = useState(null);
   const [error, setError] = useState(null);
   const previousCountryCode = useRef(null);
-  const navigate = useNavigate(); // Hook para navegar entre rutas
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCountryInfo = async () => {
@@ -19,13 +19,15 @@ const CountryInfo = () => {
         previousCountryCode.current = countryCode;
         try {
           const response = await axios.get(
-            `http://localhost:4000/country-info/${countryCode}`
+            `${import.meta.env.VITE_API_BASE_URL}/country-info/${countryCode}`
           );
           setCountryData(response.data);
           setError(null);
         } catch (error) {
-          console.error("Error fetching country info:", error);
-          setError("Error fetching country information. Please try again.");
+          setError(
+            "Error fetching country information. Please try again. Error:",
+            error
+          );
         }
       }
     };
@@ -66,7 +68,6 @@ const CountryInfo = () => {
   return (
     <div className="container mx-auto p-5 max-w-3xl">
       <div className="flex justify-start mb-4">
-        {/* Botón para regresar a la lista de países */}
         <button
           onClick={() => navigate("/")}
           className="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600"

@@ -10,7 +10,7 @@ const CountryList = () => {
     const fetchCountries = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/available-countries"
+          `${import.meta.env.VITE_API_BASE_URL}/available-countries`
         );
         setCountries(response.data);
       } catch (error) {
@@ -21,7 +21,6 @@ const CountryList = () => {
     fetchCountries();
   }, []);
 
-  // Filtrar países según el término de búsqueda
   const filteredCountries = countries.filter((country) =>
     country.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -32,7 +31,6 @@ const CountryList = () => {
         Available Countries
       </h1>
 
-      {/* Barra de búsqueda */}
       <div className="mb-4">
         <input
           type="text"
